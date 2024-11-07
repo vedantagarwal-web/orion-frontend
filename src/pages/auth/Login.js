@@ -33,13 +33,18 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
+    console.log('Attempting login with:', { email: formData.email, password: '***' });
+    
     try {
       await login(formData.email, formData.password);
+      console.log('Login successful');
       navigate('/dashboard');
     } catch (err) {
+      console.error('Login error:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
       setError(err.response?.data?.message || 'Failed to login');
     } finally {
       setLoading(false);

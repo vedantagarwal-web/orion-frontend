@@ -46,15 +46,31 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Starting signup process...');
+    
     if (formData.password !== formData.confirmPassword) {
+      console.log('Password mismatch');
       setError('Passwords do not match');
       return;
     }
 
     try {
+      console.log('Form data being sent:', {
+        ...formData,
+        password: '[HIDDEN]',
+        confirmPassword: '[HIDDEN]',
+        userType: formData.userType
+      });
+
       await signup(formData);
+      console.log('Signup successful, navigating to dashboard');
       navigate('/dashboard');
     } catch (err) {
+      console.error('Detailed signup error:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
       setError(err.response?.data?.message || 'Failed to create account');
     }
   };
